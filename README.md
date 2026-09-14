@@ -1,246 +1,152 @@
-# Intelligent AI-Powered Circular Campus Resource Exchange and Asset Lifecycle Management System
+# Intelligent AI-Powered Circular Campus Resource Exchange and Asset Life Cycle Management System
 
-An enterprise-grade platform for sharing, managing, and optimizing the lifecycle of campus resources—combining traditional asset management with AI-driven semantic matching, sustainability optimization, and intelligent recommendations.
+**Working name:** Campus Item Exchange
 
-**Project Type:** COSC 336 Software Engineering Team Project  
-**Status:** Phase 1 - Requirements & Planning  
-**License:** MIT
+A small university website where one department lists an unused item, another department requests it, and an administrator approves the transfer. The website also records maintenance and final disposal and provides simple AI assistance.
 
----
+**Course:** COSC 336 Introduction to Software Engineering  
+**Status:** Phase 1 planning and requirements gathering  
+**Repository:** [cosc336-circular-campus-9](https://github.com/HamedQayed/cosc336-circular-campus-9)  
+**License:** MIT, as stated in the original team README; confirm the repository LICENSE file matches.
 
-## 🎯 Project Vision
+The functions below are planned features. This README does not claim they have already been implemented.
 
-Universities routinely purchase thousands of assets—furniture, computers, lab equipment, materials—while similar usable resources sit unused or are discarded elsewhere. The problem isn't a shortage of reusable assets; it's the absence of an **integrated system that can identify, classify, match, transfer, maintain, and track** those resources throughout their lifecycle.
+## Project scope
 
-This project addresses that gap by building a **dual-perspective system**:
-- **Classical approach:** Structured, rule-based asset management (requirements, design, modular code, systematic testing)
-- **Modern approach:** AI-augmented decision-making (semantic matching, sustainability optimization, natural language interfaces, predictive analytics)
+One campus, two sample departments, about 20 sample items, and three user roles: staff, asset custodian, and administrator. Initial demonstration items will be chairs, books, and monitors. Other campus asset categories can use the same registration fields.
 
-By working on both perspectives, the team will explore how traditional software engineering practices evolve when enhanced with emerging AI technologies—and learn to think critically about when AI adds value versus when human oversight is essential.
+The main pages will cover the item list and registration form, requests and approvals, item history, and the assistant and reports, with a separate login screen.
 
----
+The prototype will use sample data. Public sales, online payments, physical delivery services, and automatic asset disposal are outside the proposed software scope. University-system integrations, wider campus rollout, and historical demand prediction will be considered during feasibility and detailed requirements review. The full course project description determines any additional mandatory scope.
 
-## 🚀 Core Features (Baseline + AI-Enhanced)
+## Core features
 
-### Baseline Functionality
-- **Asset Registry:** Register, catalog, and maintain campus resource records
-- **Resource Discovery:** Search, filter, and browse available assets
-- **Request Workflow:** Submit resource requests with approval routing and tracking
-- **Lifecycle Management:** Record inspections, maintenance, repairs, transfers, donations, recycling, and disposal
-- **Access Control:** Multi-role permissions (departments, custodians, admins, facilities, finance)
-- **Ownership & Location Tracking:** Manage custody changes and geographic distribution
+| ID | Feature | Planned behavior |
+| --- | --- | --- |
+| FR01 | Asset registration and publication | Custodians shall add and edit item name, description, category, condition, quantity, department, custodian, and location. They shall mark surplus or underused items as available for others to request. |
+| FR02 | Search requests and reservations | Staff shall search and filter available items and submit a request with specifications, quantity, urgency, and needed date. The system shall show request status, support reservations, and prevent reservations or approved allocations from exceeding available quantity. |
+| FR03 | Approvals and transfers | Administrators shall approve or reject requests and record a reason. Custodians shall confirm completed handovers. The system shall update ownership, custody, location, and availability only after the required approval and handover steps, and retain the transfer record. |
+| FR04 | Asset life cycle history | Custodians shall record inspections, maintenance, repairs, refurbishment, donation, recycling, and disposal with the date, responsible person, outcome, and relevant cost. Administrators shall approve transfers and final disposition actions. Records shall preserve the history of each item. |
+| FR05 | User roles and permissions | Users shall sign in under staff, custodian, or administrator roles. Staff shall manage their own requests; custodians shall manage assigned assets; administrators shall manage accounts and approvals. The system shall enforce these permissions and log important changes. |
 
-### AI-Powered Enhancements
-- **Semantic Resource Matching Engine:** Intelligently match available assets to departmental requests based on technical specs, condition, quantity, location, and urgency
-- **Auto-Classification:** AI-assisted tagging and standardized descriptions for new resources
-- **Sustainability Optimizer:** Decision support for reuse, repair, donation, recycling, or retirement
-- **Natural Language Assistant:** LLM-powered search and navigation
-- **Analytics & Reporting:** Quantify avoided purchases, financial savings, waste diversion, and carbon emission reductions
+## Required AI features
 
----
+All five AI functions remain in the project. We propose one hosted AI service used through a small Python helper module.
 
-## 📋 Project Structure
+| ID | Feature | Planned behavior |
+| --- | --- | --- |
+| AI01 | Resource matching | The system shall suggest up to three available items for a request using meaning, technical compatibility, condition, quantity, location, and urgency. Each suggestion shall include a short reason. The application shall check availability and permissions, and the requester shall choose whether to proceed. |
+| AI02 | Asset classification | The system shall suggest an item category, tags, and a clearer description from the entered information. The custodian shall review or edit the suggestion before saving it. Unknown specifications shall remain unknown. |
+| AI03 | Sustainability advice | The system shall suggest reuse, transfer, repair, refurbishment, donation, recycling, or retirement using the available condition, demand, cost, and environmental information. It shall explain the suggestion and identify missing information. Authorized staff shall make the final decision. |
+| AI04 | Natural language assistant | The system shall answer simple questions about authorized asset records, help users search, prepare a resource request, and find the correct page. A user shall confirm a request before it is submitted. The assistant shall follow the same permissions as the normal interface. |
+| AI05 | Generated activity reports | The system shall produce a short written summary of exchanges, maintenance, avoided purchases, savings, waste diversion, and estimated carbon reductions. Application code shall calculate totals; AI shall summarize those totals. Sample data, assumptions, and unavailable estimates shall be clearly identified. |
 
+The application will calculate quantities and report totals and enforce permissions and approvals. AI suggestions require user review. If the AI service is unavailable, ordinary search, requests, and asset records will remain usable.
+
+## User roles and stakeholders
+
+| Login role | Main permissions |
+| --- | --- |
+| Staff | Browse items, submit and track their own requests, and use the assistant. |
+| Asset custodian | Maintain assigned item records, publish availability, confirm handovers, and record inspection and maintenance events. |
+| Administrator | Manage accounts, approve requests and final disposition, and view activity and sustainability reports. |
+
+Departments and requesters use the staff role. Asset owners and Facilities/IT staff use the custodian role for assigned items. Finance, sustainability staff, management, and auditors are report recipients during the prototype. Donation and recycling partners receive approved handover details; campus staff record their confirmations. These groups remain stakeholders even when they do not have a separate login role.
+
+## Proposed technology
+
+- **Application:** Python with Flask.
+- **Pages:** HTML templates and CSS served by the same application.
+- **Database:** SQLite for the small local prototype.
+- **AI:** One hosted service, selected after checking access, cost, and data handling.
+- **Testing:** Python tests for critical workflows plus manual usability checks.
+- **Collaboration:** Git and GitHub.
+
+This is a proposal for Phase 2 feasibility review. SQLite avoids a separate database server for the prototype; see the [official Flask database tutorial](https://flask.palletsprojects.com/en/stable/tutorial/database/). The [Flask project layout guide](https://flask.palletsprojects.com/en/stable/tutorial/layout/) shows how templates, application modules, and tests can be kept together. Exact versions and run commands will be added after the application is built and tested.
+
+## Course phases and deadlines
+
+Each deadline is during the scheduled lab in the week beginning on the date shown.
+
+| Phase | Lab week beginning | Deliverable | Weight |
+| --- | --- | --- | --- |
+| 1 | 14 September 2026 | Initial plan and requirement gathering document | 10% |
+| 2 | 21 September 2026 | Feasibility document | 10% |
+| 3 | 5 October 2026 | Requirements document | 10% |
+| 4 and 5 | 26 October 2026 | Architecture and detailed design document | 20% |
+| 6 | 16 November 2026 | Draft implementation with major features | 20% |
+| 7 | 23 November 2026 | Details of test cases | 10% |
+| 8 | 23 November 2026 | Final project, presentation, and demonstration | 20% |
+
+**GitHub deadline:** Add the instructor and lab engineer as collaborators by **15 September 2026**. Each member must make regular, meaningful commits under their own identity. GitHub history accounts for **10% of each student's phase grade**.
+
+## Proposed success criteria
+
+These are prototype acceptance targets to confirm with stakeholders, not achieved results or real campus savings.
+
+| Measure | Target |
+| --- | --- |
+| Core functions | Pass all 10 agreed critical test scenarios, covering registration, search, reservations, approvals, transfers, permissions, and life-cycle events. |
+| Search performance | At least 19 of 20 searches return within 3 seconds using the 20-item sample database on the agreed test computer. |
+| User acceptance | At least 4 of 5 representative test users submit an item request without assistance. |
+| Match usefulness | For at least 8 of 10 test requests with a valid match, a reviewer finds a suitable item among the top 3 AI suggestions. Compare results with keyword search. |
+| Avoided purchases | Record 5 sample transfers that replace hypothetical planned purchases and correctly calculate net savings for all 5. |
+| Reuse repair and sustainability | Demonstrate at least 2 reuse cases and 2 repair cases. For 10 sample reporting cases, match manually checked reuse, waste-diversion, and carbon calculations wherever inputs exist; flag missing inputs. |
+
+For reporting, use net savings = avoided purchase cost minus transfer, repair, and refurbishment costs. Report reuse rate and waste diversion for a stated period using unique assets so repeated events are not double-counted. Carbon reduction is the replacement-scenario emissions minus reuse-scenario emissions; show the source and assumptions for each factor. A missing input produces an unavailable estimate, not an invented value. Any demonstration factors are labeled as sample assumptions.
+
+## Phase 1 documentation and setup
+
+Phase 1 produces one **Initial Plan and Requirement Gathering Document** covering the introduction, overview, stakeholders, gathering methods and findings, initial requirements, success measures, and project plan. Interview notes must describe actual consultations; unconfirmed procedures remain assumptions.
+
+1. Clone the team repository:
+
+```bash
+git clone https://github.com/HamedQayed/cosc336-circular-campus-9.git
+cd cosc336-circular-campus-9
 ```
-.
-├── README.md                       # This file
-├── LICENSE                         # MIT License
-├── docs/
-│   ├── phase1/                     # Phase 1 deliverables
-│   │   ├── 01-project-overview.md
-│   │   ├── 02-stakeholder-analysis.md
-│   │   ├── 03-process-mapping.md
-│   │   ├── 04-requirements.md
-│   │   ├── 05-success-criteria.md
-│   │   ├── 06-project-plan.md
-│   │   └── 07-risk-register.md
-│   ├── architecture/               # System design (Phase 2)
-│   ├── api/                        # API documentation
-│   └── user-guides/                # End-user documentation
-├── backend/                        # Backend services (Node/Python/etc.)
-├── frontend/                       # Web interface (React/Vue/etc.)
-├── ai-modules/                     # AI/ML components
-└── tests/                          # Test suites
 
-```
+2. Add the revised README at the repository root.
+3. Place the report at `docs/phase1/Phase_1_Initial_Plan_and_Requirements.docx`, creating the folder if needed. Keep any actual interview notes alongside it.
+4. Assign team roles, record stakeholder findings, and review the complete course project description.
+5. Commit each completed contribution using its author's own Git identity.
 
----
+Application installation and startup instructions will be added when working code is available.
 
-## 📊 Phase Breakdown
+### Planned organization
 
-| Phase | Focus | Timeline |
-|-------|-------|----------|
-| **Phase 1** | Requirements, stakeholder analysis, process mapping, success criteria, project plan | Weeks 1–2 |
-| **Phase 2** | System architecture, data modeling, UI/UX design, tech stack finalization | Weeks 3–4 |
-| **Phase 3** | Backend development, API implementation, database design | Weeks 5–7 |
-| **Phase 4** | Frontend development, integration testing, AI module prototyping | Weeks 8–10 |
-| **Phase 5** | System testing, documentation, deployment preparation, demo & evaluation | Weeks 11–12 |
+These locations describe the intended structure; they are not a claim that the files already exist.
 
----
+| Location | Purpose |
+| --- | --- |
+| `README.md` | Project scope, schedule, and setup information. |
+| `docs/phase1/` | Phase 1 report and actual gathering notes. |
+| `docs/phase2/` | Feasibility document. |
+| `docs/phase3/` | Detailed requirements. |
+| `docs/design/` | Architecture and detailed design for Phases 4 and 5. |
+| `app/` | Python application, templates, styles, and AI helper. |
+| `tests/` | Tests for implemented behavior. |
+| `sample_data/` | Clearly labeled demonstration data. |
 
-## 🎓 Learning Objectives
+## Team workflow
 
-By completing this project, students will:
-- Apply the **complete software development lifecycle** (requirements → design → implementation → testing → deployment)
-- Practice **stakeholder-driven requirements gathering** and user-centered design
-- Design and implement a **multi-role access control system** with clear workflows
-- Build a **scalable, modular architecture** for a production-grade platform
-- Integrate **emerging AI technologies** responsibly into traditional software systems
-- Measure **quantifiable business and environmental impact** (cost savings, waste diversion, carbon reduction)
-- Reflect critically on **when AI adds value** and when human oversight is necessary
-- Collaborate as an **agile engineering team** using GitHub, kanban boards, and code review practices
+- Assign each task an owner and a reviewer. Team members may hold more than one responsibility.
+- Use a branch for a task and make small, meaningful commits.
+- Open a pull request and have a teammate review it before merging.
+- Check relevant behavior and update the documentation with each change.
+- Keep passwords, API keys, local databases, and generated files out of Git.
+- Review any AI-generated work and follow the course policy for disclosing assistance.
 
----
+**Team members and student IDs:** [Fill in]  
+**Task assignments:** [Fill in]  
+**Instructor GitHub username:** [Fill in]  
+**Lab engineer GitHub username:** [Fill in]  
+**Consultation notes and dates:** [Fill in with actual findings]
 
-## 👥 Key Stakeholders
+## References
 
-| Stakeholder | Role | Needs |
-|-------------|------|-------|
-| **Departments** | Resource requesters | Find, reserve, and request needed assets quickly |
-| **Asset Custodians** | Resource owners | Track asset location, condition, custody changes |
-| **Administrators** | System operators | Approve transfers, enforce policies, manage workflows |
-| **Facilities/IT** | Support team | Log maintenance, record disposals, manage inventory |
-| **Finance/Sustainability** | Decision makers | Measure cost savings, waste diversion, carbon impact |
+- COSC 336 Circular Campus Project Fall 2026, slides 4 to 11 and accompanying notes.
+- Git, GitHub, and Copilot for Senior Design onboarding guide.
+- Official Flask documentation linked above.
 
----
-
-## 🔧 Tech Stack (To Be Finalized in Phase 2)
-
-**Candidates under consideration:**
-- **Backend:** Node.js + Express, Python + FastAPI, or Java + Spring Boot
-- **Frontend:** React, Vue.js, or Angular
-- **Database:** PostgreSQL (primary), potentially MongoDB for flexible asset schemas
-- **AI/ML:** OpenAI API, Hugging Face transformers, or custom semantic models
-- **Deployment:** Docker, Kubernetes (if scaling required), or cloud platforms (AWS, Azure, GCP)
-- **Testing:** Jest/Pytest, Selenium, integration test frameworks
-- **DevOps:** GitHub Actions, CI/CD pipelines
-
----
-
-## 🛠️ Getting Started
-
-### Prerequisites
-- Git and GitHub account
-- Node.js 16+ or Python 3.9+ (depending on tech stack choice)
-- Docker (optional, for containerization)
-- A code editor (VS Code recommended)
-
-### Phase 1 Setup
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/HamedQayed/cosc336-circular-campus-9.git
-   cd cosc336-circular-campus-9
-   ```
-
-2. **Read Phase 1 documentation:**
-   ```bash
-   cd docs/phase1
-   # Start with 01-project-overview.md
-   ```
-
-3. **Join the project board:** (Link to GitHub Projects board once created)
-
-4. **Contribute to Phase 1 deliverables:** See [CONTRIBUTING.md](CONTRIBUTING.md) (to be created)
-
----
-
-## 📈 Success Criteria (Preliminary)
-
-**Functional Goals:**
-- ✅ Multi-role authentication and access control
-- ✅ Full asset lifecycle tracking (create → maintain → dispose)
-- ✅ Request-to-approval workflow with audit trail
-- ✅ Semantic matching engine (AI-powered)
-- ✅ Sustainability impact reporting
-
-**Quantitative Metrics:**
-- **Adoption:** >70% of departments using platform within pilot period
-- **Reuse Rate:** >60% of surplus assets successfully transferred
-- **Cost Avoidance:** Minimum $50K in avoided purchases (simulated/projected)
-- **Sustainability:** Minimum 10 metric tons CO₂ equivalent avoided
-- **User Satisfaction:** SUS score >70
-
-**Quality Goals:**
-- Code coverage: ≥80%
-- API response time: <500ms (p95)
-- System uptime: ≥99.5%
-- Zero critical security vulnerabilities in final release
-
----
-
-## 📚 Documentation
-
-- **[Phase 1 Deliverables](docs/phase1/)** – Requirements, stakeholder analysis, process maps, success criteria
-- **[Project Plan](docs/phase1/06-project-plan.md)** – Milestones, task breakdown, timeline
-- **[Architecture](docs/architecture/)** – System design, data models, component diagrams (Phase 2+)
-- **[API Reference](docs/api/)** – Endpoint specifications (Phase 3+)
-- **[User Guides](docs/user-guides/)** – Administrator and end-user manuals
-
----
-
-## 🤝 Contributing
-
-This is a team project. All contributions should follow:
-1. Create a feature branch: `git checkout -b feature/your-feature-name`
-2. Make changes and commit with clear messages
-3. Submit a pull request with description of changes
-4. Get code review approval before merging
-5. Ensure tests pass and documentation is updated
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
----
-
-## ⚠️ Critical Design Decisions (Under Discussion)
-
-- **AI Confidence & Transparency:** How much confidence in AI recommendations should trigger automation vs. require human review?
-- **Sustainability Metrics:** Which methodology should we use to calculate carbon impact and cost avoidance?
-- **Data Privacy:** How should we handle sensitive financial and departmental data?
-- **Scalability:** Should the system support multi-campus deployments?
-
-These decisions will be refined during Phase 1 and documented in the Architecture phase.
-
----
-
-## 🏆 Evaluation Criteria
-
-The project will be evaluated on:
-- **Requirements & Design:** Clarity, completeness, stakeholder alignment
-- **Implementation:** Code quality, modularity, documentation
-- **Testing:** Coverage, edge case handling, integration testing
-- **AI Integration:** Value delivered by AI features, user experience, explainability
-- **Sustainability Impact:** Measurement and reporting of environmental/financial benefits
-- **Presentation & Documentation:** Clarity, professionalism, completeness
-
----
-
-## 📞 Contact & Support
-
-- **Project Lead:** [Team to assign]
-- **Issues & Questions:** Use GitHub Issues with appropriate labels
-- **Team Communication:** [Slack/Teams channel to be created]
-- **Instructors:** [Course coordinator contact info]
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License—see [LICENSE](LICENSE) for details.
-
----
-
-## 🌱 Sustainability Note
-
-This platform is designed to promote a **circular economy** on campus by:
-- **Maximizing reuse** of existing assets
-- **Reducing unnecessary purchases** and waste
-- **Extending asset lifespans** through maintenance and repair tracking
-- **Measuring environmental impact** in real-time
-- **Supporting data-driven sustainability decisions**
-
-By the end of this project, we hope to demonstrate how software engineering can drive meaningful environmental and economic value.
-
----
-
-**Last Updated:** September 2026  
-**Next Review:** End of Phase 1
+**Last updated:** 14 September 2026
