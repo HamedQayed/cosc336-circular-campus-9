@@ -137,7 +137,7 @@ These locations describe the intended structure; they are not a claim that the f
 - Keep passwords, API keys, local databases, and generated files out of Git.
 - Review any AI-generated work and follow the course policy for disclosing assistance.
 
-**Team members and student IDs:** [Fill in]  
+**Team members and student IDs:** [Hamed Qayed-100066581, Zayed Alnuaimi-100063561, Mohammed Siam-100064837, Ali Alameri-100066635]  
 **Task assignments:** [Fill in]  
 **Instructor GitHub username:** [Fill in]  
 **Lab engineer GitHub username:** [Fill in]  
