@@ -1,4 +1,4 @@
-# Intelligent AI-Powered Circular Campus Resource Exchange and Asset Life Cycle Management System
+# Intelligent AI-Powered Circular Campus Resource Exchange, Asset Life Cycle, & Inventory Management System
 
 **Working name:** Campus Item Exchange
 
