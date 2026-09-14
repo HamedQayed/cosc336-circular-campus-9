@@ -1,4 +1,4 @@
-# Intelligent AI-Powered Circular Campus Resource Exchange and Asset Lifecycle Management System
+# Intelligent AI-Powered Campus Resource Exchange, Asset Lifecycle, & Inventory Management System
 
 An enterprise-grade platform for sharing, managing, and optimizing the lifecycle of campus resources—combining traditional asset management with AI-driven semantic matching, sustainability optimization, and intelligent recommendations.
 
