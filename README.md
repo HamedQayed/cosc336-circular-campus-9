@@ -115,7 +115,7 @@ Application installation and startup instructions will be added when working cod
 
 ### Planned organization
 
-These locations describe the intended structure; they are not a claim that the files already exist.
+These locations describe the intended structure. Note that they are not a claim that the files already exist.
 
 | Location | Purpose |
 | --- | --- |
