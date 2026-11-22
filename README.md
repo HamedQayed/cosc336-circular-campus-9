@@ -38,3 +38,7 @@ Stage 3 adds independent approvals, evidence-based collection and receipt, servi
 
 ## Recovery
 Use `python -m flask --app run snapshot /path/to/new-snapshot` to create a database and evidence snapshot outside the active evidence directory. Use `python -m flask --app run restore-isolated /path/to/snapshot /path/to/new-restore` to verify and restore outside the active instance. Secure these files: they contain application data.
+
+## Final key-owner verification
+
+The application at commit 4010d04 passed all 80 automated tests on macOS Python 3.13 and a complete Chrome registration-to-receipt workflow. Five live GLM task families passed through GUI forms, with reviewed narrative publication and CSV download. See docs/phase6/FINAL_VERIFICATION.json for exact observations and limits. PRs #4–#7 remain open; main does not yet contain the complete implementation. These results use synthetic data and do not establish labelled model accuracy or user acceptance.
