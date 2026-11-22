@@ -18,6 +18,6 @@ Test command and observed result: python -m pytest -o addopts='' -q; 32 passed o
 Date and GitHub commit or PR: 22 November 2026; phase6/hamed-assets-requests. Foundation PR #4 remains open by request; this contribution is dependent on it.
 
 Ali Alameri 100066635
-Actual revisions and explanation:
-Test command and observed result:
-Date and GitHub commit or PR:
+Actual revisions and explanation: Codex integrated stage 3 approvals, evidence-based transfers, maintenance, inspections, disposition and audit on top of Hamed's existing branch. Review fixes keep each request with one source custodian, protect held units and open service jobs, retain expiration after rejected actions, invalidate stale dispute forms, and show handover actions only to appropriate roles. Stage 3 depends on draft PR #5 and foundation PR #4; neither was merged.
+Test command and observed result: Python 3.12.14 on Windows; python -m pytest -o addopts='' -q, 54 passed. The preceding stage passed 32 tests separately. In a local synthetic demo, a requester submitted a request, a workflow administrator approved it, and a custodian opened a service job; the job and Under service status appeared in the browser. Full end-to-end browser handover and Word document visual layout were not verified.
+Date and GitHub commit or PR: 22 November 2026; phase6/ali-workflows. The commit and PR are recorded in the private handoff after publication.
