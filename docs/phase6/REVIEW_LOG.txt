@@ -9,7 +9,7 @@ Date and GitHub commit or PR:
 
 Zayed Alnuaimi 100063561
 Actual revisions and explanation: Agent integrated stage 4 AI assistance, scoped impact reports and CSV, and isolated database/evidence recovery over the verified stage 3 branch. Preserved preceding fixes and restricted hosted requests to OpenRouter GLM 5.3 Flash. AI suggestions require human review; fixtures are not live calls.
-Test command and observed result: Linux Python 3.13, python -m pytest -o addopts='' -q: 79 passed; preceding stage: 54 passed. Browser: signed in as requester, opened AI assistance and submitted a catalogue question without credentials; the configuration error appeared. No live AI call or full browser handover was performed.
+Test command and observed result: Linux Python 3.13, python -m pytest -o addopts='' -q: 79 passed; preceding stage: 54 passed. Browser: signed in as requester, opened AI assistance and submitted a catalogue question without credentials; the configuration error appeared. No live AI call or full browser handover was performed. Follow-up review added regression checks for snapshot paths and distinct-unit diversion; 80 offline tests passed.
 Date and GitHub commit or PR: 22 November 2026; phase6/zayed-ai-reports, dependent on open draft PR #6 and its upstream PRs #5 and #4.
 
 Hamed Qayed 100066581

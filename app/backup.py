@@ -15,6 +15,9 @@ def digest(path):
 
 def snapshot(destination):
     destination=Path(destination).resolve()
+    evidence=Path(current_app.config['EVIDENCE_DIR']).resolve()
+    if destination==evidence or evidence in destination.parents:
+        raise click.ClickException('Choose a snapshot directory outside active evidence.')
     if destination.exists():raise click.ClickException('Choose a new snapshot directory.')
     destination.mkdir(parents=True)
     try:
@@ -24,7 +27,7 @@ def snapshot(destination):
             target=sqlite3.connect(destination/'campus.sqlite')
             try:source.backup(target)
             finally:target.close();source.close()
-            shutil.copytree(current_app.config['EVIDENCE_DIR'],destination/'evidence')
+            shutil.copytree(evidence,destination/'evidence')
         manifest={str(p.relative_to(destination)):digest(p) for p in destination.rglob('*') if p.is_file()}
         (destination/'manifest.json').write_text(json.dumps({'format':1,'files':manifest},indent=2))
     except BaseException:

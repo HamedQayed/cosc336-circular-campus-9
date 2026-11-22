@@ -42,6 +42,7 @@ class ReportService:
             if impact and impact['environment_validated'] and impact['source'] and impact['replacement_co2'] is not None and impact['reuse_co2'] is not None:
                 known_carbon.append(impact['replacement_co2']-impact['reuse_co2'])
         dispositions=repo.all("SELECT DISTINCT unit_id,action FROM dispositions WHERE status='Executed' AND substr(completed_at,1,10) BETWEEN ? AND ?",(start,end))
+        disposed={r['unit_id'] for r in dispositions}
         diverted=len({r['unit_id'] for r in dispositions if r['action'] in ('Donated','Recycled')})
         repairs=repo.one("SELECT COUNT(*) n,COUNT(DISTINCT unit_id) units FROM maintenance WHERE status='Closed' AND substr(completed_at,1,10) BETWEEN ? AND ?",(start,end))
         transfer_count=repo.one("SELECT COUNT(DISTINCT request_id) n FROM transfers WHERE status='Completed' AND substr(completed_at,1,10) BETWEEN ? AND ?",(start,end))['n']
@@ -50,7 +51,7 @@ class ReportService:
                  'finance_coverage':f'{len(known_finance)}/{len(ids)}',
                  'carbon_kg_co2e':f'{sum(known_carbon):.2f}' if known_carbon else 'Unavailable',
                  'carbon_coverage':f'{len(known_carbon)}/{len(ids)}',
-                 'diversion_rate_percent':f'{100*diverted/len(dispositions):.2f}' if dispositions else 'Not applicable',
+                 'diversion_rate_percent':f'{100*diverted/len(disposed):.2f}' if disposed else 'Not applicable',
                  'closed_repair_jobs':str(repairs['n']),'distinct_repaired_units':str(repairs['units'])}
         # Each reporting profile receives only its field family, even before AI retrieval.
         allowed={'procurement':{'completed_transfers','unique_reused_units'},

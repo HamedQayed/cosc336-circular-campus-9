@@ -37,4 +37,4 @@ Stage 2 verification on Windows with Python 3.12.14: 32 automated tests passed. 
 Stage 3 adds independent approvals, evidence-based collection and receipt, service and disposition workflows, and audit history. A request reserves units from one source custodian; if eligible stock is split across custodians, submit smaller requests. The stage-three branch depends on the open stage-two PR #5 and foundation PR #4. Stage 4 depends on open draft PR #6 and its upstream PRs #5 and #4.
 
 ## Recovery
-Use `python -m flask --app run snapshot /path/to/new-snapshot` to create a database and evidence snapshot. Use `python -m flask --app run restore-isolated /path/to/snapshot /path/to/new-restore` to verify and restore outside the active instance. Secure these files: they contain application data.
+Use `python -m flask --app run snapshot /path/to/new-snapshot` to create a database and evidence snapshot outside the active evidence directory. Use `python -m flask --app run restore-isolated /path/to/snapshot /path/to/new-restore` to verify and restore outside the active instance. Secure these files: they contain application data.

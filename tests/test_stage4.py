@@ -104,6 +104,14 @@ def test_report_missing_zero_and_negative_inputs(app):
         assert metrics['finance_coverage']=='1/1' and metrics['unique_reused_units']=='1'
 
 
+def test_diversion_counts_each_disposed_unit_once(app):
+    with app.app_context():
+        repo=Repository();day=now().date().isoformat()
+        for action in ('Donated','Recycled'):
+            repo.write("INSERT INTO dispositions(unit_id,proposer_id,action,status,reason,created_at,completed_at) VALUES(1,2,?,'Executed','fixture',?,?)",(action,day,day))
+        assert ReportService().calculate(user(4),day,day)['metrics']['diversion_rate_percent']=='100.00'
+
+
 def test_csv_export_is_authorized_and_real_table(app,client):
     with app.app_context():completed()
     login(client,11);assert client.get('/reports.csv').status_code==403
@@ -119,6 +127,8 @@ def test_backup_restores_database_and_evidence_to_isolated_location(app,tmp_path
         assert len(list((tmp_path/'restore'/'evidence').iterdir()))==1
         from click import ClickException
         with pytest.raises(ClickException):restore(tmp_path/'snapshot',Path(app.config['DATABASE']).parent)
+        with pytest.raises(ClickException):snapshot(Path(app.config['EVIDENCE_DIR'])/'nested')
+        assert not (Path(app.config['EVIDENCE_DIR'])/'nested').exists()
         (tmp_path/'snapshot'/'campus.sqlite').write_bytes(b'tampered')
         with pytest.raises(ClickException):restore(tmp_path/'snapshot',tmp_path/'bad-restore')
 
