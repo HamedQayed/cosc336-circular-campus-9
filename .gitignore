@@ -1,1 +1,9 @@
-/.serena
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+instance/
+.env
+.DS_Store
+backups/
+test-results/

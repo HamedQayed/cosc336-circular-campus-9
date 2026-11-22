@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% from 'macros.html' import csrf,input %}{% block content %}
+<div class="login-layout"><section><p class="eyebrow">USE WHAT WE ALREADY HAVE</p><h1>A second life<br>starts on campus.</h1><p class="lead">Discover useful resources, connect departments, and keep every transfer accountable.</p><div class="word-art" aria-hidden="true">REUSE<br><span>REPAIR</span><br>RECIRCULATE</div></section>
+<section class="surface"><h2>Welcome back</h2><p class="muted">Sign in with your campus demo account.</p>{% if error %}<p role="alert" class="error">{{error}}</p>{% endif %}
+<form method="post">{{csrf()}}{{input('username','Username')}}{{input('password','Password','password')}}<button>Sign in</button></form><p class="help">Run the demo initializer first. The generated password is in your local instance/demo-credentials.txt file.</p></section></div>{% endblock %}

@@ -1,0 +1,23 @@
+CAMPUS ITEM EXCHANGE ACTUAL CONTRIBUTION REVIEW LOG
+
+AI-assisted reference prepared with OpenAI Codex. Each member records their actual review, revisions, test commands/results and date here. Do not fill in work or commits that have not occurred.
+
+Mohammed Siam 100064837
+Actual revisions and explanation:
+Test command and observed result:
+Date and GitHub commit or PR:
+
+Zayed Alnuaimi 100063561
+Actual revisions and explanation:
+Test command and observed result:
+Date and GitHub commit or PR:
+
+Hamed Qayed 100066581
+Actual revisions and explanation:
+Test command and observed result:
+Date and GitHub commit or PR:
+
+Ali Alameri 100066635
+Actual revisions and explanation:
+Test command and observed result:
+Date and GitHub commit or PR:
