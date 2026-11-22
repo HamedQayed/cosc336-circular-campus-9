@@ -1,6 +1,6 @@
-# Campus Item Exchange checkpoint 3
+# Campus Item Exchange checkpoint 4
 
-Runnable cumulative checkpoint owned by Ali Alameri. This checkpoint includes the foundation, asset registration, metadata, evidence, search, requests and reservations, plus approvals, collection, receiving-custodian confirmation, service, disposition and audit. Later modules are not implemented in this checkpoint. The complete reference and the team handoff describe the final integration.
+Runnable cumulative checkpoint including foundation, assets, requests, approvals, transfers, maintenance and lifecycle, plus advisory AI, impact reports and isolated backup/restore.
 
 ## Run
 
@@ -30,8 +30,11 @@ Review your assigned files, make and explain your revisions, record actual check
 
 22 November 2026 11:59 pm: screenshots, pushed code and presentation. 23 November 3:00 pm: demo and individual Q&A. 26 November: testing. See the supplied instructor announcement.
 
-Checkpoint 1 establishes all shared schema/domain contracts. Checkpoint 2 adds assets/requests. Checkpoint 3 adds workflow/lifecycle. Checkpoint 4 adds AI/reports/recovery. Future navigation is disabled using STAGE. The selected final AI model is z-ai/glm-5.3-flash through OpenRouter. Never commit local .env, generated passwords or instance data.
+Checkpoint 1 establishes all shared schema/domain contracts. Checkpoint 2 adds assets/requests. Checkpoint 3 adds workflow/lifecycle. Checkpoint 4 adds AI/reports/recovery. Only Mohammed configures the AI key locally; manual workflows remain available without it. The selected final AI model is z-ai/glm-5.3-flash through OpenRouter. Never commit local .env, generated passwords or instance data.
 
 Stage 2 verification on Windows with Python 3.12.14: 32 automated tests passed. Browser interaction and document layout checks remain pending. This branch depends on foundation PR #4, which remains open.
 
-Stage 3 adds independent approvals, evidence-based collection and receipt, service and disposition workflows, and audit history. A request reserves units from one source custodian; if eligible stock is split across custodians, submit smaller requests. The stage-three branch depends on the open stage-two PR #5 and foundation PR #4. The reference checkpoint must be reconciled with these changes before applying stage four.
+Stage 3 adds independent approvals, evidence-based collection and receipt, service and disposition workflows, and audit history. A request reserves units from one source custodian; if eligible stock is split across custodians, submit smaller requests. The stage-three branch depends on the open stage-two PR #5 and foundation PR #4. Stage 4 depends on open draft PR #6 and its upstream PRs #5 and #4.
+
+## Recovery
+Use `python -m flask --app run snapshot /path/to/new-snapshot` to create a database and evidence snapshot outside the active evidence directory. Use `python -m flask --app run restore-isolated /path/to/snapshot /path/to/new-restore` to verify and restore outside the active instance. Secure these files: they contain application data.
