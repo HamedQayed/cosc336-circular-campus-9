@@ -1,6 +1,6 @@
-# Campus Item Exchange checkpoint 2
+# Campus Item Exchange checkpoint 3
 
-Runnable cumulative checkpoint owned by Hamed Qayed. This checkpoint includes foundation plus asset registration, metadata, evidence, search, requests and reservations. Later modules are not implemented in this checkpoint. The complete reference and the team handoff describe the final integration.
+Runnable cumulative checkpoint owned by Ali Alameri. This checkpoint includes the foundation, asset registration, metadata, evidence, search, requests and reservations, plus approvals, collection, receiving-custodian confirmation, service, disposition and audit. Later modules are not implemented in this checkpoint. The complete reference and the team handoff describe the final integration.
 
 ## Run
 
@@ -33,3 +33,5 @@ Review your assigned files, make and explain your revisions, record actual check
 Checkpoint 1 establishes all shared schema/domain contracts. Checkpoint 2 adds assets/requests. Checkpoint 3 adds workflow/lifecycle. Checkpoint 4 adds AI/reports/recovery. Future navigation is disabled using STAGE. The selected final AI model is z-ai/glm-5.3-flash through OpenRouter. Never commit local .env, generated passwords or instance data.
 
 Stage 2 verification on Windows with Python 3.12.14: 32 automated tests passed. Browser interaction and document layout checks remain pending. This branch depends on foundation PR #4, which remains open.
+
+Stage 3 adds independent approvals, evidence-based collection and receipt, service and disposition workflows, and audit history. A request reserves units from one source custodian; if eligible stock is split across custodians, submit smaller requests. The stage-three branch depends on the open stage-two PR #5 and foundation PR #4. The reference checkpoint must be reconciled with these changes before applying stage four.

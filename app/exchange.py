@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, time
+from contextlib import contextmanager
 from zoneinfo import ZoneInfo
 import json
 from flask import Blueprint, g, request, render_template, redirect, url_for, flash
@@ -8,6 +9,20 @@ from .forms import text, integer, choice
 from .security import Policy, signed_in
 
 bp=Blueprint('exchange',__name__)
+
+
+@contextmanager
+def expiring_transaction():
+    """Keep expiration durable even when the requested action is rejected."""
+    try:
+        with transaction():
+            ExchangeService().expire_locked()
+            yield
+    except RuleError:
+        # The action transaction rolled back, including any expiration it made.
+        # Reapply expiration separately, then preserve the original rejection.
+        ExchangeService().expire()
+        raise
 
 
 class ExchangeService:
@@ -22,7 +37,12 @@ class ExchangeService:
         for rec in self.repo.all("SELECT * FROM requests WHERE status IN ('Pending','Approved') AND expires_at<?",(stamp(),)):
             in_transit=self.repo.all("SELECT id FROM transfers WHERE request_id=? AND status IN ('Awaiting receipt','Receipt disputed')",(rec['id'],))
             if in_transit:
-                self.repo.write("UPDATE transfers SET status='Receipt disputed' WHERE request_id=? AND status='Awaiting receipt'",(rec['id'],))
+                changed=self.repo.write("UPDATE transfers SET status='Receipt disputed' WHERE request_id=? AND status='Awaiting receipt'",(rec['id'],)).rowcount
+                if changed:
+                    self.repo.write('UPDATE requests SET version=version+1 WHERE id=?',(rec['id'],))
+                    self.repo.event(None,'request',rec['id'],'Transfer expired in transit',
+                                    'Physical return must be verified before releasing the hold.',
+                                    [rec['creator_id'],rec['destination_custodian_id']]+self.repo.role_users('workflow_admin'))
                 continue
             self.repo.write("UPDATE requests SET status='Expired',version=version+1 WHERE id=?",(rec['id'],))
             self.repo.write('UPDATE holds SET active=0 WHERE request_id=?',(rec['id'],))
@@ -46,8 +66,7 @@ class ExchangeService:
             raise RuleError('Choose a valid preferred condition.')
         key=text(data,'request_key',100)
         lid=integer(data,'listing_id') if data.get('listing_id') else None
-        with transaction():
-            self.expire_locked()
+        with expiring_transaction():
             prior=repo.all('SELECT * FROM requests WHERE request_key=?',(key,))
             if prior:
                 if prior[0]['creator_id']!=actor['id']:
@@ -58,10 +77,19 @@ class ExchangeService:
                 listing=repo.one('SELECT * FROM listings WHERE id=?',(lid,))
                 if listing['category']!=category:
                     raise RuleError('The selected listing does not match the requested category.')
-                units=repo.all("SELECT * FROM units u WHERE listing_id=? AND publication='Published' AND serviceability='Serviceable' AND lifecycle='Active' AND owner_dept_id<>? AND (?='' OR condition=?) AND NOT EXISTS(SELECT 1 FROM holds h WHERE h.unit_id=u.id AND active=1) ORDER BY id LIMIT ?",
-                               (lid,dept,preferred,preferred,spec.quantity))
-                if len(units)!=spec.quantity:
+                candidates=repo.all("SELECT * FROM units u WHERE listing_id=? AND publication='Published' AND serviceability='Serviceable' AND lifecycle='Active' AND owner_dept_id<>? AND (?='' OR condition=?) AND NOT EXISTS(SELECT 1 FROM holds h WHERE h.unit_id=u.id AND active=1) ORDER BY id",
+                                    (lid,dept,preferred,preferred))
+                if len(candidates)<spec.quantity:
                     raise RuleError('Not enough eligible units remain. No units were reserved.',409)
+                # A handover is recorded by one source custodian for the whole
+                # request. Do not create a reservation that nobody can collect.
+                by_custodian={}
+                for unit in candidates:
+                    by_custodian.setdefault(unit['custodian_id'],[]).append(unit)
+                units=next((group[:spec.quantity] for group in by_custodian.values()
+                            if len(group)>=spec.quantity),[])
+                if not units:
+                    raise RuleError('No single source custodian has enough eligible units for this request. Request smaller quantities separately; no units were reserved.',409)
                 for unit in units:
                     AssetUnit(unit['id'],unit['publication'],unit['serviceability'],unit['lifecycle']).reserve()
                 # Required specifications are a hard filter, not an AI promise.
@@ -81,8 +109,7 @@ class ExchangeService:
 
     def cancel(self,actor,rid):
         repo=self.repo
-        with transaction():
-            self.expire_locked()
+        with expiring_transaction():
             rec=repo.one('SELECT * FROM requests WHERE id=?',(rid,))
             Policy().request(actor,rec)
             ResourceRequest(rid,rec['status']).require('Seeking','Pending','Approved')
