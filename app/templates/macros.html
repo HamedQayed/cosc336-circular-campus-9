@@ -1,0 +1,6 @@
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{csrf_token()}}">{% endmacro %}
+{% macro input(name,label,type='text',required=true,value='',help='') %}<label>{{label}}<input name="{{name}}" type="{{type}}" value="{{value}}" {% if required %}required{% endif %} {% if type=='number' %}step="any"{% endif %}></label>{% if help %}<small class="help">{{help}}</small>{% endif %}{% endmacro %}
+{% macro area(name,label,value='',required=true) %}<label>{{label}}<textarea name="{{name}}" rows="3" {% if required %}required{% endif %}>{{value}}</textarea></label>{% endmacro %}
+{% macro select(name,label,options,blank=false) %}<label>{{label}}<select name="{{name}}" {% if not blank %}required{% endif %}>{% if blank %}<option value="">Any or unknown</option>{% endif %}{% for x in options %}<option value="{{x}}">{{x}}</option>{% endfor %}</select></label>{% endmacro %}
+{% macro reason() %}{{area('reason','Reason or recorded outcome')}}{% endmacro %}
+{% macro evidence_fields(units) %}{% for unit in units %}{{input('evidence_'~unit.id,'Evidence ID for unit '~unit.id,'number')}}{% endfor %}{% endmacro %}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Campus Item Exchange{% endblock %}</title><link rel="stylesheet" href="{{url_for('static',filename='app.css')}}"></head>
+<body><a class="skip" href="#main">Skip to content</a>
+<div class="shell"><aside><a class="brand" href="{{url_for('home')}}"><span class="brand-mark">C</span><span>Campus<br><strong>Item Exchange</strong></span></a>
+<p class="nav-label">CIRCULAR CAMPUS</p><nav aria-label="Main navigation"><a href="{{url_for('home')}}">Overview</a>
+{% if stage>=2 %}<a href="{{url_for('assets.catalogue')}}">Asset catalogue</a><a href="{{url_for('exchange.requests_page')}}">Requests and transfers</a>{% if g.user and g.user.role=='custodian' %}<a href="{{url_for('assets.mine')}}">My assets</a>{% endif %}{% endif %}
+{% if stage>=3 and g.user and g.user.role=='workflow_admin' %}<a href="{{url_for('workflow.approvals')}}">Approval queue</a>{% endif %}
+{% if stage>=4 %}<a href="{{url_for('ai.workspace')}}">AI assistance</a>{% if g.user and g.user.role in ['workflow_admin','procurement','finance','sustainability'] %}<a href="{{url_for('reporting.reports')}}">Dashboard and reports</a>{% endif %}{% endif %}
+<a href="{{url_for('notifications')}}">Notifications</a>
+{% if stage>=3 and g.user and g.user.role in ['workflow_admin','system_admin'] %}<a href="{{url_for('workflow.audit')}}">Audit history</a>{% endif %}
+{% if g.user and g.user.role=='system_admin' %}<a href="{{url_for('auth.accounts')}}">Accounts and departments</a>{% endif %}</nav>
+<div class="aside-foot">One campus. More useful lives.<br><small>COSC 336 · Phase 6</small></div></aside>
+<div class="workspace"><header><span>Engineering &amp; Business <span class="muted">/ Campus resources</span></span>{% if g.user %}<div class="identity">{{g.user.name}} <span class="badge">{{g.user.role.replace('_',' ')}}</span><form action="{{url_for('auth.logout')}}" method="post"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><button class="link" type="submit">Sign out</button></form></div>{% endif %}</header>
+<main id="main"><div class="demo-label">SYNTHETIC DEMONSTRATION DATA <span>Checkpoint {{stage}} of 4</span></div>
+{% for message in get_flashed_messages() %}<p class="notice" role="status">{{message}}</p>{% endfor %}
+{% block content %}{% endblock %}</main><footer>Campus Item Exchange · Human approval at every decision that moves an asset.</footer></div></div></body></html>
