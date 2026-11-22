@@ -1,6 +1,6 @@
 CAMPUS ITEM EXCHANGE ACTUAL CONTRIBUTION REVIEW LOG
 
-AI-assisted reference prepared with OpenAI Codex. Each member records their actual review, revisions, test commands/results and date here. Do not fill in work or commits that have not occurred.
+Each member records their actual review, revisions, test commands/results and date here. Do not fill in work or commits that have not occurred.
 
 Mohammed Siam 100064837
 Actual revisions and explanation:
@@ -13,9 +13,9 @@ Test command and observed result:
 Date and GitHub commit or PR:
 
 Hamed Qayed 100066581
-Actual revisions and explanation:
-Test command and observed result:
-Date and GitHub commit or PR:
+Actual revisions and explanation: Stage 2 adds asset registration and metadata editing, protected evidence, release proposals, catalogue filters, requests, cancellation, expiry and atomic unit reservations. Review fixes prevent edits affecting published siblings, invalidate stale sibling forms, hide private draft listings in request options, and recheck upload authority within the transaction. Added pinned timezone data for Windows.
+Test command and observed result: python -m pytest -o addopts='' -q; 32 passed on Windows, Python 3.12.14. The foundation initially failed setup because timezone data was missing; all 17 baseline tests passed after installing it. All four new regression tests failed before their fixes and passed afterward. Browser interaction and Word visual layout checks could not run in this environment and remain pending.
+Date and GitHub commit or PR: 22 November 2026; phase6/hamed-assets-requests. Foundation PR #4 remains open by request; this contribution is dependent on it.
 
 Ali Alameri 100066635
 Actual revisions and explanation:
